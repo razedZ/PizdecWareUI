@@ -451,7 +451,7 @@ function PizdecWareUI:CreateTab(name, options)
         return textObj
     end
 
-    -- AddInput method
+    -- AddInput method (updated to use only Placeholder)
     function tabInstance:AddInput(options)
         options = options or {}
         local size = options.Size or DEFAULT_SETTINGS.ComponentSize
@@ -474,7 +474,7 @@ function PizdecWareUI:CreateTab(name, options)
         local textBox = Instance.new("TextBox")
         textBox.Size = UDim2.new(1, -16, 1, 0)
         textBox.Position = UDim2.new(0, 8, 0, 0)
-        textBox.Text = options.Text or ""
+        textBox.Text = ""
         textBox.PlaceholderText = options.Placeholder or "Enter text..."
         textBox.TextColor3 = DEFAULT_SETTINGS.Input.TextColor
         textBox.PlaceholderColor3 = DEFAULT_SETTINGS.Input.PlaceholderColor
