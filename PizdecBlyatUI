@@ -451,7 +451,7 @@ function PizdecWareUI:CreateTab(name, options)
         return textObj
     end
 
-    -- AddInput method (updated to support Text attribute)
+    -- AddInput method
     function tabInstance:AddInput(options)
         options = options or {}
         local size = options.Size or DEFAULT_SETTINGS.ComponentSize
