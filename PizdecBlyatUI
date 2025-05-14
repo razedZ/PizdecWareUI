@@ -960,3 +960,6 @@ function PizdecWareUI:CreateTab(name, options)
 
     return tabInstance
 end
+
+-- Return the library for external use
+return PizdecWareUI
