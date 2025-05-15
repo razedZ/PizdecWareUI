@@ -69,6 +69,14 @@ local DEFAULT_SETTINGS = {
         CornerRadius = 4,
         PlaceholderColor = Color3.fromRGB(180, 180, 180)
     },
+    Bind = {
+        BackgroundColor = Color3.fromRGB(50, 50, 60),
+        TextColor = Color3.new(1, 1, 1),
+        Font = Enum.Font.Gotham,
+        TextSize = 13,
+        CornerRadius = 4,
+        PlaceholderColor = Color3.fromRGB(180, 180, 180)
+    },
     Background = {
         Color = Color3.fromRGB(35, 35, 45),
         CornerRadius = 4
@@ -104,7 +112,6 @@ end
 -- Function to add center marks to UI elements
 local function addCenterMarks(element)
     if not element then return end
-    
     -- Top center mark
     local topMark = Instance.new("Frame")
     topMark.Size = UDim2.new(0, 1, 0, DEFAULT_SETTINGS.Ruler.MarkSize)
@@ -115,7 +122,6 @@ local function addCenterMarks(element)
     topMark.ZIndex = element.ZIndex + 1
     topMark.Name = "TopCenterMark"
     topMark.Parent = element
-    
     -- Bottom center mark
     local bottomMark = Instance.new("Frame")
     bottomMark.Size = UDim2.new(0, 1, 0, DEFAULT_SETTINGS.Ruler.MarkSize)
@@ -126,7 +132,6 @@ local function addCenterMarks(element)
     bottomMark.ZIndex = element.ZIndex + 1
     bottomMark.Name = "BottomCenterMark"
     bottomMark.Parent = element
-    
     -- Left center mark
     local leftMark = Instance.new("Frame")
     leftMark.Size = UDim2.new(0, DEFAULT_SETTINGS.Ruler.MarkSize, 0, 1)
@@ -137,7 +142,6 @@ local function addCenterMarks(element)
     leftMark.ZIndex = element.ZIndex + 1
     leftMark.Name = "LeftCenterMark"
     leftMark.Parent = element
-    
     -- Right center mark
     local rightMark = Instance.new("Frame")
     rightMark.Size = UDim2.new(0, DEFAULT_SETTINGS.Ruler.MarkSize, 0, 1)
@@ -152,7 +156,6 @@ end
 
 function PizdecWareUI:CreateWindow(options)
     local self = setmetatable({}, PizdecWareUI)
-    
     self.options = {
         Name = options.Name or "PizdecWare",
         Version = options.Version or "1.0",
@@ -160,14 +163,12 @@ function PizdecWareUI:CreateWindow(options)
         Size = options.Size or UDim2.new(0, 600, 0, 400),
         Position = options.Position or UDim2.new(0.5, -300, 0.5, -200)
     }
-    
     -- Create UI elements
     self.Gui = Instance.new("ScreenGui")
     self.Gui.Name = self.options.Name
     self.Gui.ResetOnSpawn = false
     self.Gui.IgnoreGuiInset = true
     self.Gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
-
     -- Main frame
     self.MainFrame = Instance.new("Frame")
     self.MainFrame.Size = self.options.Size
@@ -177,17 +178,14 @@ function PizdecWareUI:CreateWindow(options)
     self.MainFrame.Active = true
     self.MainFrame.Draggable = true
     self.MainFrame.Parent = self.Gui
-    
     local uiCorner = Instance.new("UICorner")
     uiCorner.CornerRadius = UDim.new(0, 8)
     uiCorner.Parent = self.MainFrame
-    
     -- Stroke
     self.stroke = Instance.new("UIStroke")
     self.stroke.Color = self.options.Color
     self.stroke.Thickness = 1.5
     self.stroke.Parent = self.MainFrame
-    
     -- Title
     self.Title = Instance.new("TextLabel")
     self.Title.Size = UDim2.new(1, 0, 0, 40)
@@ -198,7 +196,6 @@ function PizdecWareUI:CreateWindow(options)
     self.Title.TextColor3 = self.options.Color
     self.Title.TextXAlignment = Enum.TextXAlignment.Center
     self.Title.Parent = self.MainFrame
-    
     -- Tab panel
     self.TabPanel = Instance.new("Frame")
     self.TabPanel.Size = UDim2.new(0, 120, 1, -46)
@@ -206,17 +203,14 @@ function PizdecWareUI:CreateWindow(options)
     self.TabPanel.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
     self.TabPanel.BorderSizePixel = 0
     self.TabPanel.Parent = self.MainFrame
-    
     local tabCorner = Instance.new("UICorner")
     tabCorner.CornerRadius = UDim.new(0, 6)
     tabCorner.Parent = self.TabPanel
-    
     -- Initialize tabs
     self.Tabs = {}
     self.TabButtons = {}
     self.TabCount = 0
     self.CurrentTab = nil
-    
     -- Keybind
     self.ToggleKey = Enum.KeyCode.RightShift
     UserInputService.InputBegan:Connect(function(input, gpe)
@@ -224,7 +218,6 @@ function PizdecWareUI:CreateWindow(options)
             self.Gui.Enabled = not self.Gui.Enabled
         end
     end)
-    
     return self
 end
 
@@ -232,7 +225,6 @@ function PizdecWareUI:CreateTab(name, options)
     options = options or {}
     local tabInstance = {}
     self.TabCount = self.TabCount + 1
-    
     -- Tab button
     local btn = Instance.new("TextButton")
     btn.Size = UDim2.new(1, -DEFAULT_SETTINGS.TabButton.WidthPadding, 0, DEFAULT_SETTINGS.TabButton.Height)
@@ -248,11 +240,9 @@ function PizdecWareUI:CreateTab(name, options)
     btn.TextYAlignment = Enum.TextYAlignment.Center
     btn.BorderSizePixel = 0
     btn.Parent = self.TabPanel
-    
     local btnCorner = Instance.new("UICorner")
     btnCorner.CornerRadius = UDim.new(0, DEFAULT_SETTINGS.TabButton.CornerRadius)
     btnCorner.Parent = btn
-    
     -- Tab content
     local tab = Instance.new("Frame")
     tab.Size = UDim2.new(1, -130, 1, -50)
@@ -261,11 +251,9 @@ function PizdecWareUI:CreateTab(name, options)
     tab.Visible = false
     tab.BorderSizePixel = 0
     tab.Parent = self.MainFrame
-    
     local tabContentCorner = Instance.new("UICorner")
     tabContentCorner.CornerRadius = UDim.new(0, 6)
     tabContentCorner.Parent = tab
-    
     -- Container for elements
     local elementsContainer = Instance.new("Frame")
     elementsContainer.Size = UDim2.new(1, 0, 1, 0)
@@ -273,7 +261,6 @@ function PizdecWareUI:CreateTab(name, options)
     elementsContainer.BackgroundTransparency = 1
     elementsContainer.Name = "ElementsContainer"
     elementsContainer.Parent = tab
-    
     -- Ruler and grid system
     local rulerX = Instance.new("Frame")
     rulerX.Size = UDim2.new(1, 0, 0, 1)
@@ -284,7 +271,6 @@ function PizdecWareUI:CreateTab(name, options)
     rulerX.Name = "RulerX"
     rulerX.Visible = true
     rulerX.Parent = tab
-    
     local rulerY = Instance.new("Frame")
     rulerY.Size = UDim2.new(0, 1, 1, 0)
     rulerY.Position = UDim2.new(0, 0, 0, 0)
@@ -294,7 +280,6 @@ function PizdecWareUI:CreateTab(name, options)
     rulerY.Name = "RulerY"
     rulerY.Visible = true
     rulerY.Parent = tab
-    
     -- Grid system
     local gridContainer = Instance.new("Frame")
     gridContainer.Size = UDim2.new(1, 0, 1, 0)
@@ -304,7 +289,6 @@ function PizdecWareUI:CreateTab(name, options)
     gridContainer.Name = "GridContainer"
     gridContainer.Visible = true
     gridContainer.Parent = tab
-    
     -- Create grid lines every 20 pixels
     for i = 20, tab.AbsoluteSize.X, 20 do
         local vLine = Instance.new("Frame")
@@ -315,7 +299,6 @@ function PizdecWareUI:CreateTab(name, options)
         vLine.ZIndex = DEFAULT_SETTINGS.Ruler.ZIndex
         vLine.Name = "VLine_"..i
         vLine.Parent = gridContainer
-        
         local xMarker = Instance.new("Frame")
         xMarker.Size = UDim2.new(0, 1, 0, DEFAULT_SETTINGS.Ruler.MarkSize)
         xMarker.Position = UDim2.new(0, i, 0, 0)
@@ -323,7 +306,6 @@ function PizdecWareUI:CreateTab(name, options)
         xMarker.BorderSizePixel = 0
         xMarker.ZIndex = DEFAULT_SETTINGS.Ruler.ZIndex + 1
         xMarker.Parent = rulerX
-        
         local xLabel = Instance.new("TextLabel")
         xLabel.Size = UDim2.new(0, 20, 0, 12)
         xLabel.Position = UDim2.new(0, i - 10, 0, DEFAULT_SETTINGS.Ruler.MarkSize + 2)
@@ -335,7 +317,6 @@ function PizdecWareUI:CreateTab(name, options)
         xLabel.ZIndex = DEFAULT_SETTINGS.Ruler.ZIndex + 1
         xLabel.Parent = rulerX
     end
-    
     for i = 20, tab.AbsoluteSize.Y, 20 do
         local hLine = Instance.new("Frame")
         hLine.Size = UDim2.new(1, 0, 0, 1)
@@ -345,7 +326,6 @@ function PizdecWareUI:CreateTab(name, options)
         hLine.ZIndex = DEFAULT_SETTINGS.Ruler.ZIndex
         hLine.Name = "HLine_"..i
         hLine.Parent = gridContainer
-        
         local yMarker = Instance.new("Frame")
         yMarker.Size = UDim2.new(0, DEFAULT_SETTINGS.Ruler.MarkSize, 0, 1)
         yMarker.Position = UDim2.new(0, 0, 0, i)
@@ -353,7 +333,6 @@ function PizdecWareUI:CreateTab(name, options)
         yMarker.BorderSizePixel = 0
         yMarker.ZIndex = DEFAULT_SETTINGS.Ruler.ZIndex + 1
         yMarker.Parent = rulerY
-        
         local yLabel = Instance.new("TextLabel")
         yLabel.Size = UDim2.new(0, 20, 0, 12)
         yLabel.Position = UDim2.new(0, DEFAULT_SETTINGS.Ruler.MarkSize + 2, 0, i - 6)
@@ -365,10 +344,8 @@ function PizdecWareUI:CreateTab(name, options)
         yLabel.ZIndex = DEFAULT_SETTINGS.Ruler.ZIndex + 1
         yLabel.Parent = rulerY
     end
-    
     -- Elements tracking
     local elements = {}
-    
     -- Store references
     self.Tabs[name] = {
         Frame = tab,
@@ -379,7 +356,6 @@ function PizdecWareUI:CreateTab(name, options)
         GridContainer = gridContainer
     }
     self.TabButtons[name] = btn
-    
     -- Tab switching
     btn.MouseButton1Click:Connect(function()
         for _, t in pairs(self.Tabs) do 
@@ -387,24 +363,20 @@ function PizdecWareUI:CreateTab(name, options)
         end
         tab.Visible = true
         self.CurrentTab = tabInstance
-        
         for _, b in pairs(self.TabButtons) do
             b.BackgroundColor3 = DEFAULT_SETTINGS.TabButton.InactiveColor
         end
         btn.BackgroundColor3 = DEFAULT_SETTINGS.TabButton.ActiveColor
     end)
-    
     -- Activate first tab
     if self.TabCount == 1 then
         btn.BackgroundColor3 = DEFAULT_SETTINGS.TabButton.ActiveColor
         tab.Visible = true
         self.CurrentTab = tabInstance
     end
-
     -- AddText method
     function tabInstance:AddText(options)
         options = options or {}
-        
         -- Create text label
         local textLabel = Instance.new("TextLabel")
         textLabel.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -418,44 +390,33 @@ function PizdecWareUI:CreateTab(name, options)
         textLabel.BackgroundTransparency = 1
         textLabel.ZIndex = 2
         textLabel.Parent = elementsContainer
-        
         applyTextPosition(textLabel, options.TextPosition or DEFAULT_SETTINGS.Text.TextPosition)
-        
         -- Add center marks if ruler is visible
         if rulerX.Visible then
             addCenterMarks(textLabel)
         end
-        
         -- Add to elements list
         table.insert(elements, textLabel)
-        
         -- Public methods
         local textObj = {}
-        
         function textObj:SetText(newText)
             textLabel.Text = newText
         end
-        
         function textObj:GetText()
             return textLabel.Text
         end
-        
         function textObj:SetColor(color)
             textLabel.TextColor3 = color
         end
-        
         function textObj:SetTextSize(size)
             textLabel.TextSize = size
         end
-        
         return textObj
     end
-
     -- AddInput method (updated to use only Placeholder)
     function tabInstance:AddInput(options)
         options = options or {}
         local size = options.Size or DEFAULT_SETTINGS.ComponentSize
-        
         -- Create input frame
         local inputFrame = Instance.new("Frame")
         inputFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -465,11 +426,9 @@ function PizdecWareUI:CreateTab(name, options)
         inputFrame.BackgroundColor3 = DEFAULT_SETTINGS.Input.BackgroundColor
         inputFrame.ZIndex = 2
         inputFrame.Parent = elementsContainer
-        
         local inputCorner = Instance.new("UICorner")
         inputCorner.CornerRadius = UDim.new(0, DEFAULT_SETTINGS.Input.CornerRadius)
         inputCorner.Parent = inputFrame
-        
         -- Input text box
         local textBox = Instance.new("TextBox")
         textBox.Size = UDim2.new(1, -16, 1, 0)
@@ -484,49 +443,117 @@ function PizdecWareUI:CreateTab(name, options)
         textBox.ClearTextOnFocus = false
         textBox.ZIndex = 3
         textBox.Parent = inputFrame
-        
         applyTextPosition(textBox, "Left")
-        
         -- Callback function
         local callback = options.Callback or function() end
-        
         textBox.FocusLost:Connect(function(enterPressed)
             if enterPressed then
                 callback(textBox.Text)
             end
         end)
-        
         -- Add center marks if ruler is visible
         if rulerX.Visible then
             addCenterMarks(inputFrame)
         end
-        
         -- Add to elements list
         table.insert(elements, inputFrame)
-        
         -- Public methods
         local inputObj = {}
-        
         function inputObj:SetText(text)
             textBox.Text = text
         end
-        
         function inputObj:GetText()
             return textBox.Text
         end
-        
         function inputObj:SetPlaceholder(text)
             textBox.PlaceholderText = text
         end
-        
         return inputObj
     end
+    -- AddBind method
+    function tabInstance:AddBind(options)
+        options = options or {}
+        local size = options.Size or DEFAULT_SETTINGS.ComponentSize
+        local currentBind = options.Placeholder or "None"
+        local callback = options.Callback or function() end
+        
+        -- Create bind frame
+        local bindFrame = Instance.new("Frame")
+        bindFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+        bindFrame.Size = UDim2.new(0, size.X, 0, size.Y)
+        bindFrame.Position = UDim2.new(0, options.Position and options.Position.X or 0, 
+                                       0, options.Position and options.Position.Y or 0)
+        bindFrame.BackgroundColor3 = DEFAULT_SETTINGS.Bind.BackgroundColor
+        bindFrame.ZIndex = 2
+        bindFrame.Parent = elementsContainer
+        local bindCorner = Instance.new("UICorner")
+        bindCorner.CornerRadius = UDim.new(0, DEFAULT_SETTINGS.Bind.CornerRadius)
+        bindCorner.Parent = bindFrame
+        
+        -- Bind text box
+        local bindBox = Instance.new("TextBox")
+        bindBox.Size = UDim2.new(1, -16, 1, 0)
+        bindBox.Position = UDim2.new(0, 8, 0, 0)
+        bindBox.Text = ""
+        bindBox.PlaceholderText = currentBind
+        bindBox.TextColor3 = DEFAULT_SETTINGS.Bind.TextColor
+        bindBox.PlaceholderColor3 = DEFAULT_SETTINGS.Bind.PlaceholderColor
+        bindBox.Font = DEFAULT_SETTINGS.Bind.Font
+        bindBox.TextSize = DEFAULT_SETTINGS.Bind.TextSize
+        bindBox.BackgroundTransparency = 1
+        bindBox.ClearTextOnFocus = false
+        bindBox.ZIndex = 3
+        bindBox.Selectable = false
+        bindBox.Parent = bindFrame
+        applyTextPosition(bindBox, "Left")
+        
+        -- Detect key press
+        local binding = false
+        bindFrame.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                binding = true
+                bindBox.Text = ""
+                bindBox.PlaceholderText = "Press a key..."
+            end
+        end)
+        
+        UserInputService.InputBegan:Connect(function(input, gameProcessed)
+            if binding and not gameProcessed then
+                if input.KeyCode ~= Enum.KeyCode.Unknown then
+                    bindBox.Text = input.KeyCode.Name
+                    bindBox.PlaceholderText = ""
+                    binding = false
+                    callback(input.KeyCode)
+                end
+            end
+        end)
 
+        -- Add center marks if ruler is visible
+        if rulerX.Visible then
+            addCenterMarks(bindFrame)
+        end
+
+        -- Add to elements list
+        table.insert(elements, bindFrame)
+
+        -- Public methods
+        local bindObj = {}
+        function bindObj:SetKey(key)
+            bindBox.Text = key.Name
+            bindBox.PlaceholderText = ""
+        end
+        function bindObj:GetKey()
+            return bindBox.Text
+        end
+        function bindObj:SetPlaceholder(text)
+            bindBox.PlaceholderText = text
+        end
+        return bindObj
+    end
     -- AddBackground method
     function tabInstance:AddBackground(options)
         options = options or {}
         local size = options.Size or DEFAULT_SETTINGS.ComponentSize
-        
         -- Create background frame
         local background = Instance.new("Frame")
         background.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -536,42 +563,32 @@ function PizdecWareUI:CreateTab(name, options)
         background.BackgroundColor3 = options.Color or DEFAULT_SETTINGS.Background.Color
         background.ZIndex = 1
         background.Parent = elementsContainer
-        
         local backgroundCorner = Instance.new("UICorner")
         backgroundCorner.CornerRadius = UDim.new(0, DEFAULT_SETTINGS.Background.CornerRadius)
         backgroundCorner.Parent = background
-        
         -- Add center marks if ruler is visible
         if rulerX.Visible then
             addCenterMarks(background)
         end
-        
         -- Add to elements list
         table.insert(elements, background)
-        
         -- Public methods
         local backgroundObj = {}
-        
         function backgroundObj:SetColor(color)
             background.BackgroundColor3 = color
         end
-        
         function backgroundObj:SetSize(newSize)
             background.Size = UDim2.new(0, newSize.X, 0, newSize.Y)
         end
-        
         function backgroundObj:SetPosition(newPos)
             background.Position = UDim2.new(0, newPos.X, 0, newPos.Y)
         end
-        
         return backgroundObj
     end
-
     -- AddToggle method
     function tabInstance:AddToggle(options)
         options = options or {}
         local size = options.Size or DEFAULT_SETTINGS.ComponentSize
-        
         -- Create toggle button
         local toggleBtn = Instance.new("TextButton")
         toggleBtn.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -586,33 +603,26 @@ function PizdecWareUI:CreateTab(name, options)
         applyTextPosition(toggleBtn, options.TextPosition or DEFAULT_SETTINGS.Toggle.TextPosition)
         toggleBtn.ZIndex = 2
         toggleBtn.Parent = elementsContainer
-        
         local toggleCorner = Instance.new("UICorner")
         toggleCorner.CornerRadius = UDim.new(0, DEFAULT_SETTINGS.Toggle.CornerRadius)
         toggleCorner.Parent = toggleBtn
-        
         -- Add center marks if ruler is visible
         if rulerX.Visible then
             addCenterMarks(toggleBtn)
         end
-        
         -- State management
         local state = false
         local callback = options.Callback or function() end
-        
         -- Press effect function
         local function applyPressEffect()
             local originalColor = state and DEFAULT_SETTINGS.Toggle.ActiveColor or DEFAULT_SETTINGS.Toggle.InactiveColor
             toggleBtn.BackgroundColor3 = DEFAULT_SETTINGS.Toggle.ActiveColor:Lerp(Color3.new(1,1,1), 0.3)
-            
             task.delay(DEFAULT_SETTINGS.Toggle.PressEffectDuration, function()
                 toggleBtn.BackgroundColor3 = originalColor
             end)
         end
-        
         toggleBtn.MouseButton1Click:Connect(function()
             state = not state
-            
             if state then
                 toggleBtn.Text = (options.Text or "Toggle") .. " (ON)"
                 toggleBtn.BackgroundColor3 = DEFAULT_SETTINGS.Toggle.ActiveColor
@@ -620,16 +630,12 @@ function PizdecWareUI:CreateTab(name, options)
                 toggleBtn.Text = (options.Text or "Toggle") .. " (OFF)"
                 toggleBtn.BackgroundColor3 = DEFAULT_SETTINGS.Toggle.InactiveColor
             end
-            
             callback(state)
         end)
-        
         -- Add to elements list
         table.insert(elements, toggleBtn)
-        
         -- Public methods
         local toggle = {}
-        
         function toggle:SetState(newState)
             state = newState
             if state then
@@ -641,19 +647,15 @@ function PizdecWareUI:CreateTab(name, options)
             end
             callback(state)
         end
-        
         function toggle:GetState()
             return state
         end
-        
         return toggle
     end
-
     -- AddButton method with press effect fix
     function tabInstance:AddButton(options)
         options = options or {}
         local size = options.Size or DEFAULT_SETTINGS.ComponentSize
-        
         -- Create button
         local button = Instance.new("TextButton")
         button.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -668,41 +670,32 @@ function PizdecWareUI:CreateTab(name, options)
         applyTextPosition(button, options.TextPosition or DEFAULT_SETTINGS.Button.TextPosition)
         button.ZIndex = 2
         button.Parent = elementsContainer
-        
         local buttonCorner = Instance.new("UICorner")
         buttonCorner.CornerRadius = UDim.new(0, DEFAULT_SETTINGS.Button.CornerRadius)
         buttonCorner.Parent = button
-        
         -- Add center marks if ruler is visible
         if rulerX.Visible then
             addCenterMarks(button)
         end
-        
         -- Press effect with debounce
         local debounce = false
         button.MouseButton1Click:Connect(function()
             if debounce then return end
             debounce = true
-            
             local originalColor = button.BackgroundColor3
             button.BackgroundColor3 = DEFAULT_SETTINGS.Button.PressEffectColor
-            
             task.delay(DEFAULT_SETTINGS.Button.PressEffectDuration, function()
                 button.BackgroundColor3 = originalColor
                 debounce = false
             end)
-            
             if options.Callback then
                 options.Callback()
             end
         end)
-        
         -- Add to elements list
         table.insert(elements, button)
-        
         return button
     end
-
     -- AddDropdown method with fixed list positioning
     function tabInstance:AddDropdown(options)
         options = options or {}
@@ -710,7 +703,6 @@ function PizdecWareUI:CreateTab(name, options)
         local items = options.Items or {}
         local callback = options.Callback or function() end
         local searchEnabled = options.Search or false
-        
         -- Create dropdown frame
         local dropdown = Instance.new("Frame")
         dropdown.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -720,10 +712,8 @@ function PizdecWareUI:CreateTab(name, options)
         dropdown.BackgroundColor3 = DEFAULT_SETTINGS.Dropdown.BackgroundColor
         dropdown.ZIndex = 2
         dropdown.Parent = elementsContainer
-        
         local dropdownCorner = Instance.new("UICorner")
         dropdownCorner.Parent = dropdown
-        
         -- Selected item label
         local selected = Instance.new("TextLabel")
         selected.Size = UDim2.new(1, -30, 1, 0)
@@ -737,7 +727,6 @@ function PizdecWareUI:CreateTab(name, options)
         selected.TextYAlignment = Enum.TextYAlignment.Center
         selected.ZIndex = 3
         selected.Parent = dropdown
-        
         -- Arrow indicator
         local arrow = Instance.new("TextLabel")
         arrow.Size = UDim2.new(0, 20, 1, 0)
@@ -751,7 +740,6 @@ function PizdecWareUI:CreateTab(name, options)
         arrow.TextYAlignment = Enum.TextYAlignment.Center
         arrow.ZIndex = 3
         arrow.Parent = dropdown
-        
         -- Search input (hidden by default)
         local searchBox = Instance.new("TextBox")
         searchBox.Size = UDim2.new(1, -10, 1, 0)
@@ -765,10 +753,8 @@ function PizdecWareUI:CreateTab(name, options)
         searchBox.Visible = false
         searchBox.ZIndex = 5
         searchBox.Parent = dropdown
-        
         local searchCorner = Instance.new("UICorner")
         searchCorner.Parent = searchBox
-        
         -- List frame (positioned below dropdown)
         local listFrame = Instance.new("ScrollingFrame")
         listFrame.AnchorPoint = Vector2.new(0.5, 0)
@@ -782,14 +768,11 @@ function PizdecWareUI:CreateTab(name, options)
         listFrame.Visible = false
         listFrame.ZIndex = 4
         listFrame.Parent = elementsContainer
-        
         local listCorner = Instance.new("UICorner")
         listCorner.Parent = listFrame
-        
         -- State
         local open = false
         local filteredItems = items
-        
         -- Function to update dropdown items
         local function updateItems()
             -- Clear existing items
@@ -798,7 +781,6 @@ function PizdecWareUI:CreateTab(name, options)
                     child:Destroy()
                 end
             end
-            
             -- Add new items
             for i, item in ipairs(filteredItems) do
                 local button = Instance.new("TextButton")
@@ -812,10 +794,8 @@ function PizdecWareUI:CreateTab(name, options)
                 button.AutoButtonColor = false
                 button.ZIndex = 5
                 button.Parent = listFrame
-                
                 local buttonCorner = Instance.new("UICorner")
                 buttonCorner.Parent = button
-                
                 button.MouseButton1Click:Connect(function()
                     selected.Text = item
                     arrow.Text = "▼"
@@ -823,22 +803,19 @@ function PizdecWareUI:CreateTab(name, options)
                     listFrame.Visible = false
                     if searchEnabled then
                         searchBox.Visible = false
-                        selected.Visible = true
-                        arrow.Visible = true
+                        selected.Visible = false
+                        arrow.Visible = false
                         searchBox.Text = ""
                     end
                     callback(item)
                 end)
             end
-            
             -- Update canvas size
             listFrame.CanvasSize = UDim2.new(0, 0, 0, #filteredItems * 30)
         end
-        
         -- Toggle dropdown
         local function toggleDropdown()
             open = not open
-            
             if open then
                 arrow.Text = "▲"
                 if searchEnabled then
@@ -847,7 +824,6 @@ function PizdecWareUI:CreateTab(name, options)
                     arrow.Visible = false
                     searchBox:CaptureFocus()
                 end
-                
                 updateItems()
                 listFrame.Visible = true
                 TweenService:Create(listFrame, TweenInfo.new(0.25), {
@@ -861,7 +837,6 @@ function PizdecWareUI:CreateTab(name, options)
                     arrow.Visible = true
                     searchBox.Text = ""
                 end
-                
                 TweenService:Create(listFrame, TweenInfo.new(0.25), {
                     Size = UDim2.new(0, size.X, 0, 0)
                 }):Play()
@@ -872,19 +847,16 @@ function PizdecWareUI:CreateTab(name, options)
                 end)
             end
         end
-        
         -- Dropdown click
         dropdown.InputBegan:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
                 toggleDropdown()
             end
         end)
-        
         -- Search functionality
         if searchEnabled then
             searchBox.FocusLost:Connect(function(enterPressed)
                 if not open then return end
-                
                 local searchText = string.lower(searchBox.Text)
                 if searchText == "" then
                     filteredItems = items
@@ -896,13 +868,11 @@ function PizdecWareUI:CreateTab(name, options)
                         end
                     end
                 end
-                
                 updateItems()
                 TweenService:Create(listFrame, TweenInfo.new(0.25), {
                     Size = UDim2.new(0, size.X, 0, math.min(#filteredItems * 30, 200))
                 }):Play()
             end)
-            
             searchBox:GetPropertyChangedSignal("Text"):Connect(function()
                 local searchText = string.lower(searchBox.Text)
                 if searchText == "" then
@@ -915,26 +885,21 @@ function PizdecWareUI:CreateTab(name, options)
                         end
                     end
                 end
-                
                 updateItems()
                 TweenService:Create(listFrame, TweenInfo.new(0.25), {
                     Size = UDim2.new(0, size.X, 0, math.min(#filteredItems * 30, 200))
                 }):Play()
             end)
         end
-        
         -- Add center marks if ruler is visible
         if rulerX.Visible then
             addCenterMarks(dropdown)
         end
-        
         -- Add to elements list
         table.insert(elements, dropdown)
         table.insert(elements, listFrame)
-        
         -- Public methods
         local dropdownObj = {}
-        
         function dropdownObj:SetItems(newItems)
             items = newItems
             filteredItems = newItems
@@ -942,22 +907,17 @@ function PizdecWareUI:CreateTab(name, options)
                 updateItems()
             end
         end
-        
         function dropdownObj:SetSelected(text)
             selected.Text = text
         end
-        
         function dropdownObj:GetSelected()
             return selected.Text
         end
-        
         function dropdownObj:IsOpen()
             return open
         end
-        
         return dropdownObj
     end
-
     return tabInstance
 end
 
