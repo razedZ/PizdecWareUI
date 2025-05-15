@@ -474,79 +474,74 @@ function PizdecWareUI:CreateTab(name, options)
     function tabInstance:AddBind(options)
         options = options or {}
         local size = options.Size or DEFAULT_SETTINGS.ComponentSize
-        local currentBind = options.Placeholder or "None"
-        local callback = options.Callback or function() end
-        
-        -- Create bind frame
+        local placeholder = options.Placeholder or "None"
+
         local bindFrame = Instance.new("Frame")
         bindFrame.AnchorPoint = Vector2.new(0.5, 0.5)
         bindFrame.Size = UDim2.new(0, size.X, 0, size.Y)
-        bindFrame.Position = UDim2.new(0, options.Position and options.Position.X or 0, 
-                                       0, options.Position and options.Position.Y or 0)
+        bindFrame.Position = UDim2.new(0, options.Position and options.Position.X or 0, 0, options.Position and options.Position.Y or 0)
         bindFrame.BackgroundColor3 = DEFAULT_SETTINGS.Bind.BackgroundColor
         bindFrame.ZIndex = 2
         bindFrame.Parent = elementsContainer
         local bindCorner = Instance.new("UICorner")
         bindCorner.CornerRadius = UDim.new(0, DEFAULT_SETTINGS.Bind.CornerRadius)
         bindCorner.Parent = bindFrame
-        
-        -- Bind text box
-        local bindBox = Instance.new("TextBox")
-        bindBox.Size = UDim2.new(1, -16, 1, 0)
-        bindBox.Position = UDim2.new(0, 8, 0, 0)
-        bindBox.Text = ""
-        bindBox.PlaceholderText = currentBind
-        bindBox.TextColor3 = DEFAULT_SETTINGS.Bind.TextColor
-        bindBox.PlaceholderColor3 = DEFAULT_SETTINGS.Bind.PlaceholderColor
-        bindBox.Font = DEFAULT_SETTINGS.Bind.Font
-        bindBox.TextSize = DEFAULT_SETTINGS.Bind.TextSize
-        bindBox.BackgroundTransparency = 1
-        bindBox.ClearTextOnFocus = false
-        bindBox.ZIndex = 3
-        bindBox.Selectable = false
-        bindBox.Parent = bindFrame
-        applyTextPosition(bindBox, "Left")
-        
-        -- Detect key press
-        local binding = false
+
+        local bindLabel = Instance.new("TextLabel")
+        bindLabel.Size = UDim2.new(1, -10, 1, 0)
+        bindLabel.Position = UDim2.new(0, 5, 0, 0)
+        bindLabel.Text = "Bind: " .. placeholder
+        bindLabel.TextColor3 = DEFAULT_SETTINGS.Bind.TextColor
+        bindLabel.Font = DEFAULT_SETTINGS.Bind.Font
+        bindLabel.TextSize = DEFAULT_SETTINGS.Bind.TextSize
+        bindLabel.BackgroundTransparency = 1
+        bindLabel.ZIndex = 3
+        bindLabel.TextXAlignment = Enum.TextXAlignment.Left
+        bindLabel.TextYAlignment = Enum.TextYAlignment.Center
+        bindLabel.Parent = bindFrame
+
+        local padding = Instance.new("UIPadding")
+        padding.PaddingLeft = UDim.new(0, 8)
+        padding.Parent = bindLabel
+
+        local currentKey = nil
+        local waitingForKey = false
+
         bindFrame.InputBegan:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                binding = true
-                bindBox.Text = ""
-                bindBox.PlaceholderText = "Press a key..."
-            end
-        end)
-        
-        UserInputService.InputBegan:Connect(function(input, gameProcessed)
-            if binding and not gameProcessed then
-                if input.KeyCode ~= Enum.KeyCode.Unknown then
-                    bindBox.Text = input.KeyCode.Name
-                    bindBox.PlaceholderText = ""
-                    binding = false
-                    callback(input.KeyCode)
+                if not waitingForKey then
+                    waitingForKey = true
+                    bindLabel.Text = "Press any key..."
+
+                    local connection
+                    connection = UserInputService.InputBegan:Connect(function(input, gameProcessed)
+                        if not gameProcessed and input.UserInputType == Enum.UserInputType.Keyboard then
+                            currentKey = input.KeyCode
+                            bindLabel.Text = "Bind: " .. tostring(currentKey):gsub("Enum.KeyCode.", "")
+                            waitingForKey = false
+                            connection:Disconnect()
+                            if options.Callback then
+                                options.Callback(currentKey)
+                            end
+                        end
+                    end)
                 end
             end
         end)
 
-        -- Add center marks if ruler is visible
         if rulerX.Visible then
             addCenterMarks(bindFrame)
         end
 
-        -- Add to elements list
         table.insert(elements, bindFrame)
 
-        -- Public methods
         local bindObj = {}
         function bindObj:SetKey(key)
-            bindBox.Text = key.Name
-            bindBox.PlaceholderText = ""
+            currentKey = key
+            bindLabel.Text = "Bind: " .. tostring(currentKey):gsub("Enum.KeyCode.", "")
         end
         function bindObj:GetKey()
-            return bindBox.Text
-        end
-        function bindObj:SetPlaceholder(text)
-            bindBox.PlaceholderText = text
+            return currentKey
         end
         return bindObj
     end
@@ -759,7 +754,6 @@ function PizdecWareUI:CreateTab(name, options)
         local listFrame = Instance.new("ScrollingFrame")
         listFrame.AnchorPoint = Vector2.new(0.5, 0)
         listFrame.Size = UDim2.new(0, size.X, 0, 0)
-        -- Fixed positioning below dropdown - now uses the same X position as dropdown
         listFrame.Position = UDim2.new(dropdown.Position.X.Scale, dropdown.Position.X.Offset, 0, dropdown.Position.Y.Offset + size.Y/2 + 5)
         listFrame.BackgroundColor3 = DEFAULT_SETTINGS.Dropdown.ListBackground
         listFrame.ClipsDescendants = true
@@ -775,13 +769,11 @@ function PizdecWareUI:CreateTab(name, options)
         local filteredItems = items
         -- Function to update dropdown items
         local function updateItems()
-            -- Clear existing items
             for _, child in ipairs(listFrame:GetChildren()) do
                 if child:IsA("TextButton") then
                     child:Destroy()
                 end
             end
-            -- Add new items
             for i, item in ipairs(filteredItems) do
                 local button = Instance.new("TextButton")
                 button.Size = UDim2.new(1, -6, 0, 30)
@@ -803,14 +795,13 @@ function PizdecWareUI:CreateTab(name, options)
                     listFrame.Visible = false
                     if searchEnabled then
                         searchBox.Visible = false
-                        selected.Visible = false
-                        arrow.Visible = false
+                        selected.Visible = true
+                        arrow.Visible = true
                         searchBox.Text = ""
                     end
                     callback(item)
                 end)
             end
-            -- Update canvas size
             listFrame.CanvasSize = UDim2.new(0, 0, 0, #filteredItems * 30)
         end
         -- Toggle dropdown
@@ -921,5 +912,4 @@ function PizdecWareUI:CreateTab(name, options)
     return tabInstance
 end
 
--- Return the library for external use
 return PizdecWareUI
