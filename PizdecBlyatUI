@@ -190,7 +190,7 @@ function PizdecWareUI:CreateWindow(options)
     self.Title = Instance.new("TextLabel")
     self.Title.Size = UDim2.new(1, 0, 0, 40)
     self.Title.BackgroundTransparency = 1
-    self.Title.Text = self.options.Name .. " v" .. self.options.Version
+    self.Title.Text = self.options.Name .. "" .. self.options.Version
     self.Title.Font = Enum.Font.GothamBold
     self.Title.TextSize = 18
     self.Title.TextColor3 = self.options.Color
