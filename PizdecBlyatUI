@@ -158,7 +158,7 @@ function PizdecWareUI:CreateWindow(options)
     local self = setmetatable({}, PizdecWareUI)
     self.options = {
         Name = options.Name or "PizdecWare",
-        Version = options.Version or "1.0",
+        Version = options.Version or "",
         Color = options.Color or DEFAULT_SETTINGS.Toggle.ActiveColor,
         Size = options.Size or UDim2.new(0, 600, 0, 400),
         Position = options.Position or UDim2.new(0.5, -300, 0.5, -200)
