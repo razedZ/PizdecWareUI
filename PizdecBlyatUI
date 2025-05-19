@@ -446,10 +446,9 @@ function PizdecWareUI:CreateTab(name, options)
         applyTextPosition(textBox, "Left")
         -- Callback function
         local callback = options.Callback or function() end
-        textBox.FocusLost:Connect(function(enterPressed)
-            if enterPressed then
-                callback(textBox.Text)
-            end
+        -- Changed from FocusLost to TextChanged
+        textBox:GetPropertyChangedSignal("Text"):Connect(function()
+            callback(textBox.Text)
         end)
         -- Add center marks if ruler is visible
         if rulerX.Visible then
